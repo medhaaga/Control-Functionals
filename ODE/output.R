@@ -108,7 +108,7 @@ var_AM <- array(0, dim = c(length(temp), length(tmp_pts), rep))#matrix(0, nrow =
 var_CF <- array(0, dim = c(length(temp), length(tmp_pts), rep))#matrix(0, nrow = length(temp), ncol = rep)
 var_ZVCV <- array(0, dim = c(length(temp), length(tmp_pts), rep))
 
-
+## don't run this loop, objects are saved
 for (itr in 1:rep){
   for (i in 1:length(temp)){
     
@@ -127,22 +127,19 @@ for (itr in 1:rep){
 save(theta_samp, f_theta, u, file = "Objects/100_sims.Rdata")
 
 for (itr in 1:rep){
-  print(patse("Replication = ", itr))
+  print(paste("Replication = ", itr))
   for (i in 1:length(temp)){
     for (tmp in 1:length(tmp_pts)){
       mu_AM[i,tmp,itr] <- mean(f_theta[i,(1:tmp_pts[tmp]),itr])
       var_AM[i,tmp,itr] <- var(f_theta[i,(1:tmp_pts[tmp]),itr])
-      est_ind <- sample.int(tmp_pts[tmp], tmp_pts[tmp]/2)
+      #est_ind <- sample.int(tmp_pts[tmp], tmp_pts[tmp]/2)
       mu_CF[i,tmp,itr] <- CF(integrands = as.matrix(f_theta[i,(1:tmp_pts[tmp]),itr]), samples = theta_samp[i,(1:tmp_pts[tmp]),itr], derivatives = u[i,(1:tmp_pts[tmp]),itr], steinOrder = 1,
-                             kernel_function = "product", sigma = c(0.1, 3), est_inds = est_ind)$expectation
+                             kernel_function = "product", sigma = c(0.1, 3))$expectation
       var_CF[i,tmp,itr] <- CF(integrands = as.matrix((f_theta[i,(1:tmp_pts[tmp]),itr] - mu_CF[i,tmp,itr])^2), samples = theta_samp[i,(1:tmp_pts[tmp]),itr], derivatives = u[i,(1:tmp_pts[tmp]),itr], steinOrder = 1,
-                              kernel_function = "product", sigma = c(0.1, 3), est_inds = est_ind)$expectation
-      ## not calculating ZV_CV estimates for now
+                              kernel_function = "product", sigma = c(0.1, 3))$expectation
       
       mu_ZVCV[i,tmp,itr] <- zvcv(integrand = (f_theta[i,(1:tmp_pts[tmp]),itr]), samples = theta_samp[i,(1:tmp_pts[tmp]),itr], derivatives = u[i,(1:tmp_pts[tmp]),itr], options = list(nfolds = 5))$expectation
       var_ZVCV[i,tmp,itr] <- zvcv(integrand = ((f_theta[i,(1:tmp_pts[tmp]),itr] - mu_ZVCV[i,tmp,itr])^2), samples = theta_samp[i,(1:tmp_pts[tmp]),itr], derivatives = u[i,(1:tmp_pts[tmp]),itr], options = list(nfolds = 5))$expectation
-      
-      
     }
   }
 }

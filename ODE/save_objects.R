@@ -11,7 +11,7 @@ n <- length(y) ## n = 11
 m <- 30 ## no. of temperatiure intervals
 temp <- (seq(0, m, 1)/m)^5  ## temperatiure intervals
 N = 100## no. of MCMC samples
-rep <- 10
+rep <- 100
 
 theta_samp <- array(0, dim = c(length(temp), N, rep))
 f_theta <- array(0, dim = c(length(temp), N, rep)) ## f(theta) = log likelihood: log(p(y|theta))
@@ -28,7 +28,7 @@ for (itr in 1:rep){
       x_a <- RK(theta_samp[i,j,itr])
       x_a_prime <- RK_deriv(theta_samp[i,j,itr], k=0.01)
       f_theta[i,j,itr] = (loglikelihood(y, theta_samp[i,j,itr], sigma = 0.1, x_a))
-      u[i,j,itr] <- power_grad(theta_samp[i,j,itr], k = 0.01, t = temp[i], y, sigma = 0.1, x_a)
+      u[i,j,itr] <- power_grad(theta_samp[i,j,itr], k = 0.001, t = temp[i], y, sigma = 0.1, x_a)
     }
   }
 }

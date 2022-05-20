@@ -12,7 +12,7 @@ n <- length(y) ## n = 11
 m <- 30 ## no. of temperature intervals
 temp <- (seq(0, m, 1)/m)^5  ## temperature intervals
 N = 100 ## no. of MCMC samples
-rep <- 10
+rep <- dim(theta_samp)[3]
 
 load(file = "Objects/100_sims.Rdata")
 

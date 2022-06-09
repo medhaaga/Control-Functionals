@@ -12,9 +12,9 @@ n <- length(y) ## n = 11
 m <- 30 ## no. of temperature intervals
 temp <- (seq(0, m, 1)/m)^5  ## temperature intervals
 N = 100 ## no. of MCMC samples
-rep <- dim(theta_samp)[3]
 
 load(file = "Objects/100_sims.Rdata")
+rep <- dim(theta_samp)[3]
 
 tmp_pts <- seq(1,5,1)*20
 mu_AM <- array(0, dim = c(length(temp), length(tmp_pts), rep))#matrix(0, nrow = length(temp), ncol = rep)
@@ -42,7 +42,9 @@ for (itr in 1:rep){
   }
 }
 
+save(mu_AM, var_AM, mu_CF, var_CF, mu_ZVCV, var_ZVCV, file = "Objects/means_variances.Rdata")
 
+load(file = "Objects/means_variances.Rdata")
 marg_AM <- matrix(0, nrow = rep, ncol = length(tmp_pts))
 marg_CF <- matrix(0, nrow = rep, ncol = length(tmp_pts))
 marg_ZVCV <- matrix(0, nrow = rep, ncol = length(tmp_pts))
@@ -64,11 +66,11 @@ pdf(file = "Figures/boxplots.pdf", width = 15, height = 5)
 par(mfrow = c(1,3))
 marg_AM <- as.data.frame(marg_AM)
 names(marg_AM) <-  c('20', '40', '60', '80', '100')
-boxplot(marg_AM, ylim = range(marg_AM[,1], marg_CF[,1], marg_ZVCV[,1]), main = "Standard TI", xlab = "Num samples n", ylab = "Estimator Distribution")
+boxplot(marg_AM, ylim = range(marg_AM[,1], marg_CF[,1], marg_ZVCV[,1]), main = "Standard TI", xlab = "Num samples n", ylab = "Estimator Distribution", cex.lab = 1.5, cex.main = 1.5, cex.axis = 1.5)
 marg_ZVCV <- as.data.frame(marg_ZVCV)
 names(marg_ZVCV) <-  c('20', '40', '60', '80', '100')
-boxplot(marg_ZVCV, ylim = range(marg_AM[,1], marg_CF[,1], marg_ZVCV[,1]), main = "Controlled TI", xlab = "Num samples n", ylab = "Estimator Distribution")
+boxplot(marg_ZVCV, ylim = range(marg_AM[,1], marg_CF[,1], marg_ZVCV[,1]), main = "Controlled TI", xlab = "Num samples n", ylab = "Estimator Distribution", cex.lab = 1.5, cex.main = 1.5, cex.axis = 1.5)
 marg_CF <- as.data.frame(marg_CF)
 names(marg_CF) <-  c('20', '40', '60', '80', '100')
-boxplot(marg_CF, ylim = range(marg_AM[,1], marg_CF[,1], marg_ZVCV[,1]), main = "TI + Control Functionals", xlab = "Num samples n", ylab = "Estimator Distribution")
+boxplot(marg_CF, ylim = range(marg_AM[,1], marg_CF[,1], marg_ZVCV[,1]), main = "TI + Control Functionals", xlab = "Num samples n", ylab = "Estimator Distribution", cex.lab = 1.5, cex.main = 1.5, cex.axis = 1.5)
 dev.off()

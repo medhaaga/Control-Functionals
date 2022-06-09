@@ -23,13 +23,16 @@ for (i in 1:2){
   sd_CF_simp[,i+3] <- apply(mu_CF_simp[,,i], MARGIN = 1, FUN = sd)
 }
 
+pdf(file = "objects/AMvsCF.pdf", width = 15, height = 5)
+par(mfrow = c(1,3), mar=c(5,6,4,1)+.1)
+plot(sd_CF[,1], sd_AM[,1], xlim = c(0, 0.12), ylim = c(0, 0.12), xlab = "Std[Control functionals]", ylab = "Std[Arithmetic means]", main = "n = 50", cex.lab = 2, cex.main = 2, cex.axis  = 2)
+plot(sd_CF[,3], sd_AM[,3], xlim = c(0, 0.12), ylim = c(0, 0.12), xlab = "Std[Control functionals]", ylab = "Std[Arithmetic means]", main = "n = 75", cex.lab = 2, cex.main = 2, cex.axis  = 2)
+plot(sd_CF[,5], sd_AM[,5], xlim = c(0, 0.12), ylim = c(0, 0.12), xlab = "Std[Control functionals]", ylab = "Std[Arithmetic means]", main = "n = 100", cex.lab = 2, cex.main = 2, cex.axis  = 2)
+dev.off()
 
-par(mfrow = c(1,3))
-plot(sd_CF[,1], sd_AM[,1], xlim = c(0, 0.08), ylim = c(0, 0.08))
-plot(sd_CF[,3], sd_AM[,3], xlim = c(0, 0.08), ylim = c(0, 0.08))
-plot(sd_CF[,5], sd_AM[,5], xlim = c(0, 0.08), ylim = c(0, 0.08))
-
-plot(sd_CF_simp[,1], sd_ZV[,1], xlim = c(0, 0.03), ylim = c(0, 0.03))
-plot(sd_CF_simp[,3], sd_ZV[,3], xlim = c(0, 0.03), ylim = c(0, 0.03))
-plot(sd_CF_simp[,5], sd_ZV[,5], xlim = c(0, 0.03), ylim = c(0, 0.03))
-
+pdf(file = "objects/CVvsCF.pdf", width = 15, height = 5)
+par(mfrow = c(1,3), mar=c(5,6,4,1)+.1)
+plot(sd_CF_simp[,1], sd_ZV[,1], xlim = c(0, 0.03), ylim = c(0, 0.03), xlab = "Std[Control functionals]", ylab = "Std[Control Variates]", main = "n = 50", cex.lab = 2, cex.main = 2, cex.axis  = 2)
+plot(sd_CF_simp[,3], sd_ZV[,3], xlim = c(0, 0.03), ylim = c(0, 0.03), xlab = "Std[Control functionals]", ylab = "Std[Control Variates]", main = "n = 75", cex.lab = 2, cex.main = 2, cex.axis  = 2)
+plot(sd_CF_simp[,5], sd_ZV[,5], xlim = c(0, 0.03), ylim = c(0, 0.03), xlab = "Std[Control functionals]", ylab = "Std[Control Variates]", main = "n = 100", cex.lab = 2, cex.main = 2, cex.axis  = 2)
+dev.off()
